@@ -11,6 +11,8 @@ npm start                 # 启动: http://localhost:3000
 
 npm test                  # 端到端不变量测试(69 项,需先启动服务)
 npm run test:restart      # 服务进程 SIGKILL→重启恢复回归(18 项,自起停服务与临时库)
+npm run test:e2e          # 三页串联端到端(63 项,自起停服务;真实执行页面脚本)
+npm run test:all          # 以上三套依次运行
 ```
 
 > 重启恢复测试通过环境变量 `EWR_DB_FILE` 使用独立临时数据文件(默认 `/tmp/ewr-restart-db.json`),
@@ -65,9 +67,12 @@ src/storage.js  持久化 + 串行事务 + 哈希链(EWR_DB_FILE 可指定数据
 src/domain.js   仓单/质押/复检/出库领域逻辑、操作留痕、会话重建与审计查询
 src/seed.js     演示数据
 src/server.js   HTTP API、失败留痕守卫与静态托管
-public/         三端工作台(原生 HTML/JS)
+public/         三端工作台(原生 HTML/JS;common.js 以 IIFE 隔离,只暴露 window.EWR,
+                避免与各页顶层 `const { api, … } = EWR` 重名导致整脚本 SyntaxError)
 test/smoke.mjs              69 项端到端不变量测试
 test/restart-recovery.mjs   18 项进程重启恢复测试(自起停临时服务)
+test/e2e-flow.mjs           63 项三页串联端到端(仓库建单→锁定/登记/清偿/授权→出库→监管)
+test/mini-dom.mjs           e2e 使用的零依赖极简 DOM 垫片(在 Node 中真实加载 common.js+页面脚本)
 ```
 
 ## 主要 API

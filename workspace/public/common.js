@@ -1,6 +1,11 @@
-/* common.js —— 三个工作台共享工具 */
+/* common.js —— 三个工作台共享工具
+ * 注意:本文件以 IIFE 包裹,工具函数只挂到 window.EWR(及 window.closeModal)。
+ * 浏览器经典脚本共享同一全局词法环境,若在此处使用顶层 const/let/function,
+ * 会与各页面脚本顶部的 `const { api, ... } = EWR` 重名冲突,导致
+ * 「Identifier 'api' has already been declared」整脚本解析失败(下拉无数据、按钮无响应)。
+ */
 'use strict';
-
+(function () {
 async function api(path, body) {
   const res = await fetch(path, {
     method: 'POST',
@@ -174,3 +179,5 @@ window.EWR = {
   getSessionId, newSessionId, loadDrafts, saveDrafts,
   SESSION_STORE_KEY, DRAFTS_STORE_KEY
 };
+})();
+
