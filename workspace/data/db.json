@@ -116,7 +116,7 @@
       "version": 1,
       "status": "ACTIVE",
       "parentIds": [],
-      "createdAt": 1790491600081,
+      "createdAt": 1790529508832,
       "deliveredQty": 0
     },
     {
@@ -132,7 +132,7 @@
       "version": 1,
       "status": "ACTIVE",
       "parentIds": [],
-      "createdAt": 1790491600081,
+      "createdAt": 1790529508832,
       "deliveredQty": 0
     },
     {
@@ -148,7 +148,7 @@
       "version": 1,
       "status": "ACTIVE",
       "parentIds": [],
-      "createdAt": 1790491600081,
+      "createdAt": 1790529508832,
       "deliveredQty": 0
     }
   ],
@@ -163,7 +163,7 @@
         "AL-A": 19900,
         "AL-B": 18700
       },
-      "createdAt": 1790578000081,
+      "createdAt": 1790615908832,
       "createdBy": "REG-1"
     }
   ],
@@ -174,7 +174,7 @@
       "locationId": "LOC-A1",
       "gradeId": "CU-A",
       "qty": 1000,
-      "inspectedAt": 1790491600081,
+      "inspectedAt": 1790529508832,
       "kind": "INITIAL"
     },
     {
@@ -183,7 +183,7 @@
       "locationId": "LOC-A2",
       "gradeId": "CU-A",
       "qty": 600,
-      "inspectedAt": 1790491600081,
+      "inspectedAt": 1790529508832,
       "kind": "INITIAL"
     },
     {
@@ -192,7 +192,7 @@
       "locationId": "LOC-B1",
       "gradeId": "AL-A",
       "qty": 2000,
-      "inspectedAt": 1790491600081,
+      "inspectedAt": 1790529508832,
       "kind": "INITIAL"
     }
   ],

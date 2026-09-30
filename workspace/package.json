@@ -8,9 +8,13 @@
     "start": "node src/server.js",
     "test": "node test/smoke.mjs",
     "test:restart": "node test/restart-recovery.mjs",
-    "test:all": "node test/smoke.mjs && node test/restart-recovery.mjs"
+    "test:e2e": "node test/e2e-pages.mjs",
+    "test:all": "node test/smoke.mjs && node test/restart-recovery.mjs && node test/e2e-pages.mjs"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
   }
 }

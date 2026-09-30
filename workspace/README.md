@@ -11,6 +11,8 @@ npm start                 # 启动: http://localhost:3000
 
 npm test                  # 端到端不变量测试(69 项,需先启动服务)
 npm run test:restart      # 服务进程 SIGKILL→重启恢复回归(18 项,自起停服务与临时库)
+npm run test:e2e          # 三页真实页面脚本串联 E2E(87 项,自起停服务与临时库,需 npm install)
+npm run test:all          # 依次运行以上三套(174 项)
 ```
 
 > 重启恢复测试通过环境变量 `EWR_DB_FILE` 使用独立临时数据文件(默认 `/tmp/ewr-restart-db.json`),
@@ -68,6 +70,7 @@ src/server.js   HTTP API、失败留痕守卫与静态托管
 public/         三端工作台(原生 HTML/JS)
 test/smoke.mjs              69 项端到端不变量测试
 test/restart-recovery.mjs   18 项进程重启恢复测试(自起停临时服务)
+test/e2e-pages.mjs          87 项三页真实页面脚本串联测试(jsdom,自起停临时服务)
 ```
 
 ## 主要 API

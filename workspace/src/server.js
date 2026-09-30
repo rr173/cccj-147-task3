@@ -6,11 +6,19 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { load, DomainError, getState } = require('./storage');
+const { load, reset, getState, DomainError } = require('./storage');
 const domain = require('./domain');
-const { seed } = require('./seed');
+const { seed, buildSeed } = require('./seed');
 
 load();
+// 首次启动(无数据文件或空库)自动载入演示数据,与 README 承诺一致;
+// 已存在数据则原样保留,绝不覆盖后端既有状态。
+{
+  const s = getState();
+  if (!s || !Array.isArray(s.commodities) || s.commodities.length === 0) {
+    reset(buildSeed());
+  }
+}
 
 /* ---------- 融资方操作守卫:业务事务回滚后,独立事务补登失败留痕 ----------
  * 成功/重放留痕已在业务事务内写入(原子);到达这里的只有被拒绝的请求。

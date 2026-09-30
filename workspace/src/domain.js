@@ -707,13 +707,16 @@ function registerPledge(input) {
       return result;
     }
 
+    // 登记是对担保权的处分,仅当前质权人本人可提交。
+    // 身份校验必须先于任何业务状态判断:越权请求一律得到原 FORBIDDEN 拒绝信息,
+    // 既不允许操作,也不向非权利人泄露质押当前处于何种状态/是否已登记。
+    if (input.actorId && input.actorId !== p.financerId)
+      throw new DomainError('FORBIDDEN', `仅当前质权人 ${p.financerId} 可登记,${input.actorId} 的请求拒绝`);
+
     if (p.status === 'CANCELLED' || p.status === 'RELEASED' || p.status === 'DELIVERED')
       throw new DomainError('PLEDGE_CLOSED', `质押已终结(${p.status}),不能登记`);
     if (p.status === 'REGISTERED' || p.status === 'SUPPLEMENTING')
       throw new DomainError('ALREADY_REGISTERED', `质押 ${p.id} 已登记,回执 ${p.registration.registrationNo}`);
-    // 登记是对担保权的处分,仅当前质权人本人可提交
-    if (input.actorId && input.actorId !== p.financerId)
-      throw new DomainError('FORBIDDEN', `仅当前质权人 ${p.financerId} 可登记,${input.actorId} 的请求拒绝`);
 
     const r = receiptOf(s, p.receiptId);
     const expectedVersion = Number(input.expectedVersion != null ? input.expectedVersion : p.receiptVersion);
@@ -841,10 +844,11 @@ function releasePledge(input) {
       return result;
     }
     const p = pledgeOf(s, input.pledgeId);
-    if (!ACTIVE_PLEDGE_STATUS.includes(p.status))
-      throw new DomainError('PLEDGE_NOT_ACTIVE', `质押状态 ${p.status},无法放行`);
+    // 身份校验先于状态判断:越权放行一律 FORBIDDEN,不向非质权人泄露质押状态。
     if (input.actorId !== p.financerId)
       throw new DomainError('FORBIDDEN', `仅当前质权人 ${p.financerId} 可放行货物,${input.actorId || '未知主体'} 的请求拒绝`);
+    if (!ACTIVE_PLEDGE_STATUS.includes(p.status))
+      throw new DomainError('PLEDGE_NOT_ACTIVE', `质押状态 ${p.status},无法放行`);
     const exposure = exposureOf(p);
     const releaseAll = exposure <= 1e-6; // 全额还款才允许全量放行
     const asked = input.qty != null ? round3(Number(input.qty)) : null;
